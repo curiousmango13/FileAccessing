@@ -17,6 +17,12 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -71,11 +77,16 @@ import javafx.scene.text.Text;
  */
 public class Main extends Application {
 	
+	
+	
 	/**
 	 * Method, where customization of components of GUI is specified
+	 * @throws Exception 
 	 */
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) throws Exception {
+		
+		getConnection();
 		try {
 			
 			/**
@@ -405,17 +416,96 @@ public class Main extends Application {
 	/**
 	 * Method that launches the app
 	 * @param args
+	 * @param conn 
+	 * @throws Exception 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args, Connection conn) throws Exception {
 		launch(args);
+		//getConnection();
+		
+		//storeTop20(conn);
+		
+		
+		/*
+		 * 	String sqlInsert = "INSERT INTO word(idword, wordcol, frequency) VALUES (?,?,?)";
+			PreparedStatement pstmt = conn.prepareStatement(sqlInsert);
+
+			pstmt.setInt(1, 1);
+			pstmt.setString(2, entry.getKey());
+			pstmt.setInt(3, entry.getValue());
+			
+			pstmt.executeUpdate();
+			System.out.println("Data about word" + entry.getKey() + "was inserted using sql prepared statement");
+			
+		 */
 	}
 	
+
+
+
+		public static Connection getConnection() throws Exception{
+		
+		try {
+			String driver = "com.mysql.cj.jdbc.Driver"; //"com.mysql.jdbc.Driver"; //
+			String url = "jdbc:mysql://127.0.0.1:3306/wordoccurrences"; 
+			String username = "root";
+			String password = "123Iamready!";
+			Class.forName(driver);
+			
+			Connection conn = DriverManager.getConnection(url, username, password);
+			System.out.println("Connection to database was successfully established");
+			
+			String sqlInsert = " INSERT INTO wordoccurrences.word (idword, wordcol, frequency) values (0,'their',1)";
+			String sqlInsert1 = " INSERT INTO wordoccurrences.word (idword, wordcol, frequency) values (5,'tests',2)";
+			String sqlInsert2 = " INSERT INTO wordoccurrences.word (idword, wordcol, frequency) values (9,'these',3)";
+			String sqlInsert3 = " INSERT INTO wordoccurrences.word (idword, wordcol, frequency) values (8,'an',4)";
+			PreparedStatement pstmt = conn.prepareStatement(sqlInsert);
+			PreparedStatement pstmt1 = conn.prepareStatement(sqlInsert1);
+			PreparedStatement pstmt2 = conn.prepareStatement(sqlInsert2);
+			PreparedStatement pstmt3 = conn.prepareStatement(sqlInsert3);
+		
+
+			
+			pstmt.executeUpdate();
+			pstmt1.executeUpdate();
+			pstmt2.executeUpdate();
+			pstmt3.executeUpdate();
+		
+			System.out.println("Data was inserted using sql prepared statement");
+			
+
+			String sqlGetInfo = "SELECT * FROM wordoccurrences.word (idword, wordcol, frequency)";
+
+			Statement stmt2 = conn.createStatement();
+			ResultSet rs = stmt2.executeQuery(sqlGetInfo); 
+
+			// loop through the result set
+			while (rs.next()) {
+				System.out.print( 
+						"\n" + rs.getInt("idword") + "\t" + rs.getString("word") + "\t" + rs.getInt("frequency"));
+			}
+		
+			
+
+			
+			return conn;
+		}catch (Exception e) {System.out.println(e);}
+		
+		
+		
+		return null;
+		
+		
+	}
+
+
 	/**
 	 * Method printing top 20 words
 	 * @param reverseSortedMap
 	 * @return void
+	 * 
 	 */
-	private static void printTop20(LinkedHashMap<String, Integer> reverseSortedMap) {
+	private static void printTop20(LinkedHashMap<String, Integer> reverseSortedMap)  {
 
  /**
   * Creating list and subtracting first 20 elements
@@ -451,7 +541,7 @@ public class Main extends Application {
 		
 		
 /////
-		System.out.print(setOfEntries.toString() + "DELETE THIS");	
+//		System.out.print(setOfEntries.toString() + "DELETE THIS");	
 /////
 		
 		
