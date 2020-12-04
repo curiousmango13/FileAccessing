@@ -1,3 +1,9 @@
+/**
+ *Julia Smith
+ *Date: Dec 4, 2020
+ * 
+ */
+
 package application;
 
 import java.io.*;
