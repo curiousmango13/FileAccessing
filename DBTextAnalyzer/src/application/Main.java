@@ -455,7 +455,7 @@ public class Main extends Application {
 			Connection conn = DriverManager.getConnection(url, username, password);
 			System.out.println("Connection to database was successfully established");
 			
-			String sqlInsert = " INSERT INTO wordoccurrences.word (idword, wordcol, frequency) values (0,'their',1)";
+			String sqlInsert = " INSERT INTO wordoccurrences.word (idword,wordcol,frequency) VALUES (0,'the',1)";
 			String sqlInsert1 = " INSERT INTO wordoccurrences.word (idword, wordcol, frequency) values (5,'tests',2)";
 			String sqlInsert2 = " INSERT INTO wordoccurrences.word (idword, wordcol, frequency) values (9,'these',3)";
 			String sqlInsert3 = " INSERT INTO wordoccurrences.word (idword, wordcol, frequency) values (8,'an',4)";
@@ -471,10 +471,10 @@ public class Main extends Application {
 			pstmt2.executeUpdate();
 			pstmt3.executeUpdate();
 		
-			System.out.println("Data was inserted using sql prepared statement");
+			System.out.println("Data 1 was inserted using sql prepared statement");
 			
 
-			String sqlGetInfo = "SELECT * FROM wordoccurrences.word (idword, wordcol, frequency)";
+			String sqlGetInfo = "SELECT * FROM wordoccurrences.word ";
 
 			Statement stmt2 = conn.createStatement();
 			ResultSet rs = stmt2.executeQuery(sqlGetInfo); 
